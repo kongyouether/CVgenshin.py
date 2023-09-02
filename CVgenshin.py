@@ -170,17 +170,17 @@ class Ui_CVtest(QWidget):
         img[100:200, 100:200] = [0, 0, 0]
         img[100:200, 1200:1300] = [0, 0, 0]
         img[1200:1300, 100:200] = [0, 0, 0]
-        # img[1200:1300, 1200:1300] = [0, 0, 0]
+        img[1200:1300, 1200:1300] = [0, 0, 0]
 
         img[115:185, 115:185] = [255, 255, 255]
         img[115:185, 1215:1285] = [255, 255, 255]
         img[1215:1285, 115:185] = [255, 255, 255]
-        # img[1215:1285, 1215:1285] = [255, 255, 255]
+        img[1215:1285, 1215:1285] = [255, 255, 255]
 
         img[130:170, 130:170] = [0, 0, 0]
         img[130:170, 1230:1270] = [0, 0, 0]
         img[1230:1270, 130:170] = [0, 0, 0]
-        # img[1230:1270, 1230:1270] = [0, 0, 0]
+        img[1230:1270, 1230:1270] = [0, 0, 0]
 
         # 在图片中心生成一个800*800的黑色区域
         img[290:1110, 290:1110] = [0, 0, 0]
@@ -189,6 +189,8 @@ class Ui_CVtest(QWidget):
         for i in range(8):
             for j in range(8):
                 img[310 + i * 100: 390 + i * 100, 310 + j * 100: 390 + j * 100] = [255, 255, 255]
+
+        img[310 : 390 , 310 : 390] = [255, 0, 0]
 
         # 在图片中生成1-8，a-h的标识
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -244,9 +246,10 @@ class Ui_CVtest(QWidget):
         # 将spin_img旋转20度
         rows, cols, ch = spin_img.shape
         # angle为-30到30之间的非零随机数
-        angle = random.randint(-30, 30)
+        angle = random.randint(-180, 180)
+        print("angle:", angle)
 
-        length = int(cols * np.sin(abs(angle) * np.pi / 180) + rows * np.cos(abs(angle) * np.pi / 180))
+        length = int(cols * abs(np.sin(abs(angle) * np.pi / 180)) + rows * abs(np.cos(abs(angle) * np.pi / 180)))
         # print("length:", length)
 
         M = cv2.getRotationMatrix2D((cols / 2, rows / 2), angle, 1)  # 获得旋转矩阵
@@ -271,11 +274,21 @@ class Ui_CVtest(QWidget):
     def perspective_transform(self):
         global gene_img
         perspective_img = gene_img.copy()
+        turn = random.randint(0,3)
+        if turn == 1: # 逆时针旋转90度
+            perspective_img = cv2.rotate(perspective_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        elif turn == 2: # 逆时针旋转180度
+            perspective_img = cv2.rotate(perspective_img, cv2.ROTATE_180)
+        elif turn == 3: # 逆时针旋转270度
+            perspective_img = cv2.rotate(perspective_img, cv2.ROTATE_90_CLOCKWISE)
+
         source = np.float32([[0, 0], [0, 900], [900, 0], [900, 900]])
         x1,y1 = random.randint(0, 150), random.randint(0, 150)
         x2,y2 = random.randint(0, 150), random.randint(750, 900)
-        x3,y3 = random.randint(750, 900), random.randint(0, 150)
-        x4,y4 = random.randint(750, 900), random.randint(750, 900)
+        x3 = 900 - x2
+        y3 = 900 - y2
+        x4 = 900 - x1
+        y4 = 900 - y1
         destination = np.float32([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
         M = cv2.getPerspectiveTransform(source, destination)
         perspective_img = cv2.warpPerspective(perspective_img, M, (900, 900), borderValue=(255, 255, 255))
