@@ -218,7 +218,7 @@ class Ui_CVtest(QWidget):
             while True:
                 x = random.randint(0, 7)
                 y = random.randint(0, 7)
-                if [x, y] not in point_list:
+                if ([x, y] not in point_list) and (x != 0 or y != 0):
                     point_list.append([x, y])
                     cv2.circle(gene_img, (175 + 50 * x, 175 + 50 * y), 12, (0, 0, 0), -1)
                     break
