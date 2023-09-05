@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CVtest.iml" filepath="$PROJECT_DIR$/.idea/CVtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CVgenshin.py.iml" filepath="$PROJECT_DIR$/.idea/CVgenshin.py.iml" />
     </modules>
   </component>
 </project>
