@@ -26,7 +26,7 @@ class MyMainWindow(QMainWindow):
         global image_chuan
         super().__init__()
         # 设置窗口图标
-        icon = QIcon("../xiaofengmian.ico")  # 将 "your_icon.ico" 替换为你的ICO文件路径
+        icon = QIcon("xiaofengmian.ico")  # 将 "your_icon.ico" 替换为你的ICO文件路径
         self.setWindowIcon(icon)
         # 创建UI对象并初始化
         self.setupUi(self)
